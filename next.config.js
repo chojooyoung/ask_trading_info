@@ -1,4 +1,6 @@
 /** @type {import('next').NextConfig} */
-const nextConfig = {}
+const nextConfig = {
+  //   ignore: ["node_modules"],
+};
 
-module.exports = nextConfig
+module.exports = nextConfig;
