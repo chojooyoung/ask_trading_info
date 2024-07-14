@@ -7,13 +7,7 @@ export interface User {
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
-  loginUser: ({
-    isSucess,
-    token,
-  }: {
-    isSucess: boolean;
-    token: string;
-  }) => void;
+  loginUser: ({ isSucess }: { isSucess: boolean }) => void;
   logoutUser: () => void;
   checkAuth: () => void;
 }

@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useLogin } from "@/queries/auth/login";
 import { LoginData } from "@/api/auth/login";
@@ -17,13 +17,18 @@ const Login = (props: Props) => {
     mode: "onChange",
   });
 
+  const router = useRouter();
   const loginMutaion = useLogin();
   const login = useAuthStore((state) => state.loginUser);
 
   const onSubmit: SubmitHandler<LoginData> = (data) => {
-    loginMutaion.mutate(data);
+    loginMutaion.mutate(data, {
+      onSuccess: (data) => {
+        login({ isSucess: true });
+        router.push("/");
+      },
+    });
     loginMutaion.isSuccess && console.log(loginMutaion.data);
-    // login({ isSucess: true, token: loginMutaion.data. });
   };
 
   return (

@@ -7,18 +7,16 @@ const useAuthStore = create<AuthState>((set) => ({
   user: null,
   isAuthenticated: false,
 
-  loginUser: async ({ isSucess, token }) => {
+  loginUser: async ({ isSucess }) => {
     set({ isAuthenticated: isSucess });
-    setToken(token);
   },
 
   logoutUser: () => {
-    removeToken();
     set({ user: null, isAuthenticated: false });
   },
 
   checkAuth: () => {
-    const token = getToken();
+    const token = getToken("accessToken");
     if (token) {
       set({ isAuthenticated: true });
     }
