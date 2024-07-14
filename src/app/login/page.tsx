@@ -1,7 +1,9 @@
 "use client";
 
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useLogin } from "@/queries/auth/login";
+import { LoginData } from "@/api/auth/login";
 
 type Props = {};
 
@@ -10,12 +12,14 @@ const Login = (props: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<LoginData>({
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
+  const loginMutaion = useLogin();
+
+  const onSubmit: SubmitHandler<LoginData> = (data) => {
+    loginMutaion.mutate(data);
   };
 
   return (

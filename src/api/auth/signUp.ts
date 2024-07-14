@@ -17,7 +17,7 @@ export const signUp: (userData: SignUpData) => Promise<SingnUPRes> = async (
   userData: SignUpData
 ) => {
   const response: AxiosResponse<SingnUPRes> = await axios.post(
-    `${API_URL}/auth/register`,
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
     userData
   );
   return response.data;
