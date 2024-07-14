@@ -1,6 +1,8 @@
 "use client";
 import React from "react";
-import { useForm } from "react-hook-form";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useSignUp } from "@/queries/auth/singUp";
+import { SignUpData } from "@/api/auth/signUp";
 
 type Props = {};
 
@@ -9,13 +11,13 @@ const Regsiration = (props: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<SignUpData>({
     mode: "onChange",
   });
+  const signUpMutation = useSignUp();
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // 여기에 회원가입 로직을 추가하세요
+  const onSubmit: SubmitHandler<SignUpData> = (data) => {
+    signUpMutation.mutate(data);
   };
 
   return (
