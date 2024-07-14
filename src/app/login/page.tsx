@@ -16,7 +16,6 @@ const Login = (props: Props) => {
 
   const onSubmit = (data) => {
     console.log(data);
-    // 여기에 로그인 로직을 추가하세요
   };
 
   return (
@@ -31,7 +30,6 @@ const Login = (props: Props) => {
               </label>
               <div className="h-20">
                 {" "}
-                {/* 입력 필드와 에러 메시지를 위한 고정 높이 컨테이너 */}
                 <input
                   type="email"
                   placeholder="이메일"
@@ -45,8 +43,6 @@ const Login = (props: Props) => {
                   })}
                 />
                 <div className="h-5 mt-1">
-                  {" "}
-                  {/* 에러 메시지를 위한 고정 높이 공간 */}
                   {errors.email && (
                     <span className="text-red-500 text-sm">
                       {String(errors.email.message)}
@@ -60,8 +56,6 @@ const Login = (props: Props) => {
                 비밀번호
               </label>
               <div className="h-20">
-                {" "}
-                {/* 입력 필드와 에러 메시지를 위한 고정 높이 컨테이너 */}
                 <input
                   type="password"
                   placeholder="비밀번호"
@@ -76,7 +70,6 @@ const Login = (props: Props) => {
                 />
                 <div className="h-5 mt-1">
                   {" "}
-                  {/* 에러 메시지를 위한 고정 높이 공간 */}
                   {errors.password && (
                     <span className="text-red-500 text-sm">
                       {String(errors.password.message)}
