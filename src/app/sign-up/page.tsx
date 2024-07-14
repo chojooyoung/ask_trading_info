@@ -1,23 +1,38 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useSignUp } from "@/queries/auth/singUp";
 import { SignUpData } from "@/api/auth/signUp";
+import { useRouter } from "next/navigation";
 
 type Props = {};
 
 const Regsiration = (props: Props) => {
+  const router = useRouter();
   const {
     register,
     handleSubmit,
     formState: { errors },
+    setError,
   } = useForm<SignUpData>({
     mode: "onChange",
   });
+
   const signUpMutation = useSignUp();
 
   const onSubmit: SubmitHandler<SignUpData> = (data) => {
-    signUpMutation.mutate(data);
+    signUpMutation.mutate(data, {
+      onError: (error) => {
+        setError("email", {
+          type: "manual",
+          message:
+            error?.response.data.message || "회원가입 중 오류가 발생했습니다.",
+        });
+      },
+      onSuccess: () => {
+        router.push("/login");
+      },
+    });
   };
 
   return (
@@ -47,12 +62,15 @@ const Regsiration = (props: Props) => {
                   className="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
                   {...register("email", {
                     required: true,
-                    pattern: /^\S+@\S+$/i,
+                    pattern: {
+                      value: /^\S+@\S+$/i,
+                      message: "이메일 형식이 올바르지 않습니다",
+                    },
                   })}
                 />
                 {errors.email && (
                   <p className="mt-2 text-sm text-red-600">
-                    유효한 이메일을 입력해주세요.
+                    {errors.email.message}
                   </p>
                 )}
               </div>

@@ -1,10 +1,11 @@
 "use client";
 
 import React from "react";
+import { useRouter } from "next/router";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useLogin } from "@/queries/auth/login";
 import { LoginData } from "@/api/auth/login";
-
+import useAuthStore from "@/stores/authStore";
 type Props = {};
 
 const Login = (props: Props) => {
@@ -17,9 +18,12 @@ const Login = (props: Props) => {
   });
 
   const loginMutaion = useLogin();
+  const login = useAuthStore((state) => state.loginUser);
 
   const onSubmit: SubmitHandler<LoginData> = (data) => {
     loginMutaion.mutate(data);
+    loginMutaion.isSuccess && console.log(loginMutaion.data);
+    // login({ isSucess: true, token: loginMutaion.data. });
   };
 
   return (

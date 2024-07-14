@@ -1,9 +1,9 @@
 import { useMutation, UseMutationResult } from "@tanstack/react-query";
-import { signUp, SignUpData, SingnUPRes } from "@/api/auth/signUp";
+import { ApiError, signUp, SignUpData, SingnUPRes } from "@/api/auth/signUp";
 
 export const useSignUp = (): UseMutationResult<
   SingnUPRes,
-  Error,
+  ApiError,
   SignUpData
 > => {
   return useMutation({
@@ -11,7 +11,7 @@ export const useSignUp = (): UseMutationResult<
     onSuccess: (data) => {
       console.log("회원가입 성공:", data);
     },
-    onError: (error: Error) => {
+    onError: (error: ApiError) => {
       console.error("회원가입 실패:", error);
     },
   });
