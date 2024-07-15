@@ -1,8 +1,11 @@
 "use client";
 
 import React from "react";
-import { useForm } from "react-hook-form";
-
+import { useRouter } from "next/navigation";
+import { SubmitHandler, useForm } from "react-hook-form";
+import { useLogin } from "@/queries/auth/login";
+import { LoginData } from "@/api/auth/login";
+import useAuthStore from "@/stores/authStore";
 type Props = {};
 
 const Login = (props: Props) => {
@@ -10,13 +13,22 @@ const Login = (props: Props) => {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm({
+  } = useForm<LoginData>({
     mode: "onChange",
   });
 
-  const onSubmit = (data) => {
-    console.log(data);
-    // 여기에 로그인 로직을 추가하세요
+  const router = useRouter();
+  const loginMutaion = useLogin();
+  const login = useAuthStore((state) => state.loginUser);
+
+  const onSubmit: SubmitHandler<LoginData> = (data) => {
+    loginMutaion.mutate(data, {
+      onSuccess: (data) => {
+        login({ isSucess: true });
+        router.push("/");
+      },
+    });
+    loginMutaion.isSuccess && console.log(loginMutaion.data);
   };
 
   return (
@@ -31,7 +43,6 @@ const Login = (props: Props) => {
               </label>
               <div className="h-20">
                 {" "}
-                {/* 입력 필드와 에러 메시지를 위한 고정 높이 컨테이너 */}
                 <input
                   type="email"
                   placeholder="이메일"
@@ -45,8 +56,6 @@ const Login = (props: Props) => {
                   })}
                 />
                 <div className="h-5 mt-1">
-                  {" "}
-                  {/* 에러 메시지를 위한 고정 높이 공간 */}
                   {errors.email && (
                     <span className="text-red-500 text-sm">
                       {String(errors.email.message)}
@@ -60,8 +69,6 @@ const Login = (props: Props) => {
                 비밀번호
               </label>
               <div className="h-20">
-                {" "}
-                {/* 입력 필드와 에러 메시지를 위한 고정 높이 컨테이너 */}
                 <input
                   type="password"
                   placeholder="비밀번호"
@@ -76,7 +83,6 @@ const Login = (props: Props) => {
                 />
                 <div className="h-5 mt-1">
                   {" "}
-                  {/* 에러 메시지를 위한 고정 높이 공간 */}
                   {errors.password && (
                     <span className="text-red-500 text-sm">
                       {String(errors.password.message)}
