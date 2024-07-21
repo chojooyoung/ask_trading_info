@@ -6,6 +6,7 @@ import { SubmitHandler, useForm } from "react-hook-form";
 import { useLogin } from "@/queries/auth/login";
 import { LoginData } from "@/api/auth/login";
 import useAuthStore from "@/stores/authStore";
+
 type Props = {};
 
 const Login = (props: Props) => {
@@ -24,7 +25,15 @@ const Login = (props: Props) => {
   const onSubmit: SubmitHandler<LoginData> = (data) => {
     loginMutaion.mutate(data, {
       onSuccess: (data) => {
-        login({ isSucess: true });
+        login({
+          isSucess: true,
+          tokenData: {
+            accessToken: data.accessToken,
+            refreshToken: data.refreshToken,
+          },
+          userData: data.user,
+        });
+
         router.push("/");
       },
     });

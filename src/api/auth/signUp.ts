@@ -1,4 +1,5 @@
 import axios, { AxiosResponse } from "axios";
+import { createApiInstance } from "@/api";
 
 export type SignUpData = {
   email: string;
@@ -17,11 +18,12 @@ export interface ApiError extends Error {
     data: SingnUPRes;
   };
 }
+const api = createApiInstance();
 
 export const signUp: (userData: SignUpData) => Promise<SingnUPRes> = async (
   userData: SignUpData
 ) => {
-  const response: AxiosResponse<SingnUPRes> = await axios.post(
+  const response: AxiosResponse<SingnUPRes> = await api.post(
     `${process.env.NEXT_PUBLIC_API_URL}/auth/register`,
     userData
   );

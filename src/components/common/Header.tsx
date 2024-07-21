@@ -4,14 +4,16 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Header() {
-  const isLogin = useAuthStore((state) => state.isAuthenticated);
+  const isCheckLogin = useAuthStore((state) => state.checkAuth);
   const logoutUser = useAuthStore((state) => state.logoutUser);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
   useEffect(() => {
+    const { isLogin } = isCheckLogin();
+    if (isLoggedIn === null) return;
     setIsLoggedIn(isLogin);
-  }, [isLogin]);
+  }, [isCheckLogin, isLoggedIn]);
 
   const handleClickLogout = () => {
     logoutUser();
@@ -35,7 +37,7 @@ export default function Header() {
                 내 정보
               </Link>
               <button
-                onClick={() => setIsLoggedIn(false)}
+                onClick={handleClickLogout}
                 className="ml-4 px-4 py-2 bg-red-600 rounded hover:bg-red-700"
               >
                 로그아웃
