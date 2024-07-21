@@ -1,13 +1,23 @@
 export interface User {
-  id: string;
-  name: string;
-  email: string;
+  id?: string;
+  name?: string;
+  email?: string;
 }
 
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
-  loginUser: ({ isSucess }: { isSucess: boolean }) => void;
+  loginUser: ({
+    isSucess,
+    tokenData,
+  }: {
+    isSucess: boolean;
+    tokenData: { accessToken: string; refreshToken: string };
+    userData: {
+      id: string;
+      email: string;
+    };
+  }) => void;
   logoutUser: () => void;
-  checkAuth: () => void;
+  checkAuth: () => { isLogin: boolean };
 }
