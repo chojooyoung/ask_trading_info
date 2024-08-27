@@ -1,10 +1,12 @@
 "use client";
+import { useGetUserInfo } from "@/queries/auth/userInfo";
 import useAuthStore from "@/stores/authStore";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 export default function Header() {
   const isCheckLogin = useAuthStore((state) => state.checkAuth);
+  const isLoginState = useAuthStore((state) => state.isAuthenticated);
   const logoutUser = useAuthStore((state) => state.logoutUser);
 
   const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -13,11 +15,13 @@ export default function Header() {
     const { isLogin } = isCheckLogin();
     if (isLoggedIn === null) return;
     setIsLoggedIn(isLogin);
-  }, [isCheckLogin, isLoggedIn]);
+  }, [isCheckLogin, isLoggedIn, isLoginState]);
 
   const handleClickLogout = () => {
     logoutUser();
   };
+
+  const { data } = useGetUserInfo();
 
   return (
     <header className="bg-gray-800 text-white">
@@ -31,7 +35,7 @@ export default function Header() {
           {isLoggedIn ? (
             <>
               <Link
-                href="/profile"
+                href={`/profile/${data?.id}`}
                 className="px-4 py-2 rounded hover:bg-gray-700"
               >
                 내 정보

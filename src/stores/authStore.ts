@@ -15,22 +15,26 @@ const useAuthStore = create<AuthState>((set) => ({
   isAuthenticated: false,
 
   loginUser: async ({ isSucess, tokenData, userData }) => {
+    console.log(userData);
     if (isSucess) {
-      setItem("access-token", tokenData?.accessToken);
-      setItem("refresh-token", tokenData?.refreshToken);
+      setItem("diary-access-token", tokenData?.accessToken);
+      setItem("diary-refresh-token", tokenData?.refreshToken);
+      setItem("userId", userData.id);
       set({ user: userData, isAuthenticated: true });
     }
   },
 
   logoutUser: () => {
-    removeItem("access-token");
-    removeItem("refresh-token");
-    logout();
-    set({ user: null, isAuthenticated: false });
+    logout().then(() => {
+      removeItem("diary-access-token");
+      removeItem("diary-refresh-token");
+      removeItem("userId");
+      set({ user: null, isAuthenticated: false });
+    });
   },
 
   checkAuth: () => {
-    if (getItem("access-token")?.length > 0) {
+    if (getItem("diary-access-token")?.length > 0) {
       set({ isAuthenticated: true });
       return { isLogin: true };
     }

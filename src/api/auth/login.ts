@@ -23,8 +23,7 @@ export const login: (userData: LoginData) => Promise<LoginRes> = async (
   const api = createApiInstance();
   const response: AxiosResponse<LoginRes> = await axios.post(
     `${process.env.NEXT_PUBLIC_API_URL}/auth/login`,
-    userData,
-    { withCredentials: true }
+    userData
   );
   return response.data;
 };

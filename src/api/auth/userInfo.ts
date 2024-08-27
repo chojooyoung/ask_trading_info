@@ -12,8 +12,7 @@ export type UserInfoRes = {
 export const getUserInfo: () => Promise<UserInfoRes> = async () => {
   const api = createApiInstance();
   const response: AxiosResponse<UserInfoRes> = await api.get(
-    `${process.env.NEXT_PUBLIC_API_URL}/auth/me`,
-    { withCredentials: true }
+    `${process.env.NEXT_PUBLIC_API_URL}/auth/me`
   );
   return response.data;
 };

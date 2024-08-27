@@ -1,20 +1,21 @@
 import axios from "axios";
 
 const refreshToken = async () => {
-  const refreshToken = localStorage.getItem("refresh-token");
+  const refreshToken = localStorage.getItem("diary-refresh-token");
   try {
     const response = await axios.post(
-      `${process.env.NEXT_PUBLIC_API_URL}auth/refresh`,
+      `${process.env.NEXT_PUBLIC_API_URL}/auth/refresh`,
       { refreshToken }
     );
     const { accessToken, refreshToken: newRefreshToken } = response.data;
-    localStorage.setItem("access-token", accessToken);
-    localStorage.setItem("refresh-token", newRefreshToken);
+    localStorage.setItem("diary-access-token", accessToken);
+    localStorage.setItem("diary-refresh-token", newRefreshToken);
     return accessToken;
   } catch (error) {
     // 리프레시 토큰도 만료된 경우
-    localStorage.removeItem("access-token");
-    localStorage.removeItem("refresh-token");
+    localStorage.removeItem("diary-access-token");
+    localStorage.removeItem("diary-refresh-token");
+    localStorage.removeItem("userId");
     // 로그인 페이지로 리다이렉트 또는 다른 처리
     throw error;
   }
@@ -27,7 +28,7 @@ export const createApiInstance = () => {
 
   instance.interceptors.request.use(
     (config) => {
-      const token = localStorage.getItem("access-token");
+      const token = localStorage.getItem("diary-access-token");
       if (token) {
         config.headers["Authorization"] = `Bearer ${token}`;
       }

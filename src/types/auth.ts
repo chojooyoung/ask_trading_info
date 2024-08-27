@@ -4,6 +4,11 @@ export interface User {
   email?: string;
 }
 
+export interface userData {
+  id: string;
+  email: string;
+}
+
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
@@ -13,10 +18,7 @@ export interface AuthState {
   }: {
     isSucess: boolean;
     tokenData: { accessToken: string; refreshToken: string };
-    userData: {
-      id: string;
-      email: string;
-    };
+    userData: userData;
   }) => void;
   logoutUser: () => void;
   checkAuth: () => { isLogin: boolean };
